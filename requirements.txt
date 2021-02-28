@@ -1,0 +1,5 @@
+#this script was run on Python 3.7.4 on Windows 10
+beautifulsoup4==4.9.3
+bs4==0.0.1
+pandas==0.25.0
+requests==2.25.1
