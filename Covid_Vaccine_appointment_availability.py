@@ -3,11 +3,15 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 import winsound
-address = "https://www.cvs.com/immunizations/covid-19-vaccine/immunizations/covid-19-vaccine.vaccine-status.MD.json?vaccineinfo?" ##change state to select appropriate file, or remove state to get all states. CVS could change access to this/file structure at any time.
-URL = address
 
-fullLog = pd.DataFrame()
+URL = "https://www.cvs.com/immunizations/covid-19-vaccine/immunizations/covid-19-vaccine.vaccine-status.MD.json?vaccineinfo?" ##change state to select appropriate file, or remove state to get all states. CVS could change access to this/file structure at any time.
 i = True
+fullLog = pd.DataFrame()
+
+def MakeSound(): #or do other action for alerting!
+    winsound.Beep(400, 5000)
+
+
 while i == True:
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -17,7 +21,7 @@ while i == True:
     df['DateTime'] = dictSoup['responsePayloadData']['currentTime']
     if len(df[df['status'] != "Fully Booked"]) > 0:
         print(df)
-        winsound.Beep(400, 5000)
+        MakeSound()
     else:
         print("Fully Booked - Last Updated - " + str(dictSoup['responsePayloadData']['currentTime']))
     fullLog = fullLog.append(df).drop_duplicates(subset=["city","DateTime"]).reset_index(drop=True)
